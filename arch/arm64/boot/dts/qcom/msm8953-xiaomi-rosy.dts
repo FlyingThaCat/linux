@@ -31,6 +31,13 @@
     		#size-cells = <2>;
     		ranges;
     };
+
+	vph_pwr: vph-pwr-regulator {
+		compatible = "regulator-fixed";
+		regulator-name = "vph_pwr";
+		regulator-always-on;
+		regulator-boot-on;
+	};
 };
 
 &hsusb_phy {
