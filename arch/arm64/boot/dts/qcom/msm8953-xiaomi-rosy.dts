@@ -14,8 +14,8 @@
     model = "Xiaomi Redmi 5";
     compatible = "xiaomi,rosy", "qcom,msm8953"; 
     chassis-type = "handset";
-    qcom,msm-id = <338 0>;
-    qcom,msm-board-id = <0x1000b 1>;
+    qcom,msm-id = <0x152 0x00>;
+	qcom,board-id = <0x1000b 0x01>;
 
     battery: battery {
 		compatible = "simple-battery";
