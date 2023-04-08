@@ -27,9 +27,9 @@
 
 
     chosen {
-    		#address-cells = <2>;
-    		#size-cells = <2>;
-    		ranges;
+    	#address-cells = <2>;
+    	#size-cells = <2>;
+    	ranges;
     };
 
 	vph_pwr: vph-pwr-regulator {
