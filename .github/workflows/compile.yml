@@ -11,6 +11,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    
+    - name: List Directory
+      run : |
+            ls ~/
+            ls /home/runner/
+            ls /home/runner/work
+    
     - name: Update APT sources
       run: sudo apt update
 
@@ -29,7 +36,6 @@ jobs:
         mkdir -p ~/.local/bin
         chmod +x $PWD/pmbootstrap/helpers/envkernel.sh
         ln -s "$PWD/pmbootstrap/pmbootstrap.py" ~/.local/bin/pmbootstrap
-        ln -s "$PWD/pmbootstrap/helpers/envkernel.sh" ~/.local/bin/setupbuildenv
         PATH="$HOME/.local/bin:$PATH"
 
     - name: Clone Repos
@@ -40,7 +46,7 @@ jobs:
     - name: Build Kernel
       run: |
         cd /home/runner/workspace/linux
-        setupbuildenv
+        /home/runner/workspace/pmbootstrap/helpers/envkernel.sh
         make config-postmarketos pmos.config
         make -j$(nproc --all)
         pmbootstrap build --envkernel linux-postmarketos-qcom-msm8953
