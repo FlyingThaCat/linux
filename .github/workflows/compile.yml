@@ -27,6 +27,7 @@ jobs:
         cd  /home/runner/workspace
         git clone https://git.sr.ht/~postmarketos/pmbootstrap
         mkdir -p ~/.local/bin
+        chmod +x $PWD/pmbootstrap/helpers/envkernel.sh
         ln -s "$PWD/pmbootstrap/pmbootstrap.py" ~/.local/bin/pmbootstrap
         ln -s "$PWD/pmbootstrap/helpers/envkernel.sh" ~/.local/bin/setupbuildenv
         PATH="$HOME/.local/bin:$PATH"
