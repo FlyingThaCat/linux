@@ -8,28 +8,32 @@
 
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/leds/common.h>
-#include <dt-bindings/interrupt-controller/irq.h>
 
 / {
-    model = "Xiaomi Redmi 5";
     compatible = "xiaomi,rosy", "qcom,msm8953"; 
+    model = "Xiaomi Redmi 5 (rosy)";
     chassis-type = "handset";
     qcom,msm-id = <0x152 0x00>;
 	qcom,board-id = <0x1000b 0x01>;
 
-    battery: battery {
-		compatible = "simple-battery";
-		charge-full-design-microamp-hours = <4000000>;
-		constant-charge-current-max-microamp = <1000000>;
-		voltage-min-design-microvolt = <3400000>;
-		voltage-max-design-microvolt = <4400000>;
-	};
-
     chosen {
     	#address-cells = <2>;
-    	#size-cells = <2>;
-    	ranges;
+		#size-cells = <2>;
+		ranges;
     };
+
+	gpio-keys {
+		compatible = "gpio-keys";
+		
+		pinctrl-names = "default";
+		pinctrl-0 = <&gpio_key_default>;
+
+		volume-up {
+			label = "volume-up";
+			gpios = <&tlmm 85 GPIO_ACTIVE_LOW>;
+			linux,code = <KEY_VOLUMEUP>;
+		};
+	};
 
 	vph_pwr: vph-pwr-regulator {
 		compatible = "regulator-fixed";
