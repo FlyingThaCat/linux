@@ -1,0 +1,57 @@
+name: Compile Kernel (Android)
+
+on:
+  push:
+    branches: [ "msm8953-6.1.0" ]
+  pull_request:
+    branches: [ "msm8953-6.1.0" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Update APT sources
+      run: sudo apt update
+
+    - name: Install Dependencies
+      run: sudo apt install git bc bison flex libssl-dev make
+
+    - name: Create Workspace and Output
+      run: |
+        mkdir /home/runner/workspace
+        mkdir /home/runner/workspace/output
+        
+    - name: Install Pmbootstrap
+      run: |
+        cd  /home/runner/workspace
+        git clone https://git.sr.ht/~postmarketos/pmbootstrap
+        mkdir -p ~/.local/bin
+        ln -s "$PWD/pmbootstrap/pmbootstrap.py" ~/.local/bin/pmbootstrap
+        ln -s "$PWD/pmbootstrap/helpers/envkernel.sh" ~/.local/bin/setupbuildenv
+        PATH="$HOME/.local/bin:$PATH"
+
+    - name: Clone Repos
+      run: |
+        cd /home/runner/workspace
+        git clone https://github.com/FlyingThaCat/linux --depth=1
+
+    - name: Build Kernel
+      run: |
+        cd /home/runner/workspace/linux
+        setupbuildenv
+        make config-postmarketos pmos.config
+        make -j$(nproc --all)
+        pmbootstrap build --envkernel linux-postmarketos-qcom-msm8953
+        
+    - name: Build Kernel
+      run: |
+        pmbootstrap export /home/runner/workspace/output
+        ls /home/runner/workspace/output
+
+#     - uses: actions/upload-artifact@v3
+#       with:
+#        name: Kernel image file
+#        path: /home/runner/workspace/output/KERNEL.img
