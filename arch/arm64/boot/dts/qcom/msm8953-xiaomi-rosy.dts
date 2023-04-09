@@ -24,6 +24,26 @@
     	#address-cells = <2>;
 		#size-cells = <2>;
 		ranges;
+
+		framebuffer0: framebuffer@90001000 {
+			compatible = "simple-framebuffer";
+			reg = <0x0 0x90001000 0 (720 * 1440 * 3)>;
+
+			width = <720>;
+			height = <1440>;
+			stride = <(720 * 3)>;
+			format = "r8g8b8";
+
+			power-domains = <&gcc MDSS_GDSC>;
+
+			clocks = <&gcc GCC_MDSS_AHB_CLK>,
+				 <&gcc GCC_MDSS_AXI_CLK>,
+				 <&gcc GCC_MDSS_VSYNC_CLK>,
+				 <&gcc GCC_MDSS_MDP_CLK>,
+				 <&gcc GCC_MDSS_BYTE0_CLK>,
+				 <&gcc GCC_MDSS_PCLK0_CLK>,
+				 <&gcc GCC_MDSS_ESC0_CLK>;
+		};
     };
 
 	gpio-keys {
@@ -48,7 +68,7 @@
 
 		/delete-node/memory@90001000;
 		cont_splash_mem: cont-splash@90001000 {
-			reg = <0x0 0x90001000 0x0 (1080 * 2160 * 3)>;
+			reg = <0x0 0x90001000 0x0 (720 * 1440 * 3)>;
 			no-map;
 		};
 
@@ -74,6 +94,40 @@
 &cpr {
 	vdd-apc-supply = <&vreg_apc>;
 	vdd-apc-step-uv = <5000>;
+};
+
+&dsi0 {
+	panel: panel@0 {
+		compatible = "xiaomi,rosy-panel";
+		reg = <0>;
+
+		backlight = <&pmi8950_wled>;
+
+		reset-gpios = <&tlmm 61 GPIO_ACTIVE_LOW>;
+
+		pinctrl-names = "default", "sleep";
+		pinctrl-0 = <&pmx_mdss_default &mdss_te_default>;
+		pinctrl-1 = <&pmx_mdss_sleep &mdss_te_default>;
+
+		vsp-supply = <&lab_vreg>;
+		vsn-supply = <&ibb_vreg>;
+
+		port {
+			panel_in: endpoint {
+				remote-endpoint = <&dsi0_out>;
+			};
+		};
+	};
+};
+
+&dsi0_out {
+	data-lanes = <0 1 2 3>;
+	remote-endpoint = <&panel_in>;
+};
+
+&dsi_phy0 {
+        vddio-supply = <&pm8953_l6>;
+        vcca-supply = <&pm8953_l3>;
 };
 
 &hsusb_phy {
