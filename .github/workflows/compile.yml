@@ -34,7 +34,6 @@ jobs:
         cd  /home/runner/workspace
         git clone https://git.sr.ht/~postmarketos/pmbootstrap
         mkdir -p ~/.local/bin
-        chmod +x $PWD/pmbootstrap/helpers/envkernel.sh
         ln -s "$PWD/pmbootstrap/pmbootstrap.py" ~/.local/bin/pmbootstrap
         PATH="$HOME/.local/bin:$PATH"
 
@@ -46,7 +45,7 @@ jobs:
     - name: Build Kernel
       run: |
         cd /home/runner/workspace/linux
-        /home/runner/workspace/pmbootstrap/helpers/envkernel.sh
+        bash /home/runner/workspace/pmbootstrap/helpers/envkernel.sh
         make config-postmarketos pmos.config
         make -j$(nproc --all)
         pmbootstrap build --envkernel linux-postmarketos-qcom-msm8953
