@@ -10,14 +10,22 @@
 #include <dt-bindings/leds/common.h>
 
 / {
-    compatible = "xiaomi,rosy", "qcom,msm8953"; 
-    model = "Xiaomi Redmi 5 (rosy)";
-    chassis-type = "handset";
-    qcom,msm-id = <0x152 0x00>;
+	compatible = "xiaomi,rosy", "qcom,msm8953"; 
+	model = "Xiaomi Redmi 5";
+	chassis-type = "handset";
+	qcom,msm-id = <0x152 0x00>;
 	qcom,board-id = <0x1000b 0x01>;
 
+	battery: battery {
+		compatible = "simple-battery";
+		charge-full-design-microamp-hours = <4000000>;
+		constant-charge-current-max-microamp = <1000000>;
+		voltage-min-design-microvolt = <3400000>;
+		voltage-max-design-microvolt = <4400000>;
+	};
+
     chosen {
-    	#address-cells = <2>;
+		#address-cells = <2>;
 		#size-cells = <2>;
 		ranges;
 
@@ -49,7 +57,7 @@
 		pinctrl-0 = <&gpio_key_default>;
 
 		key-volume-up {
-			label = "volume_up";
+			label = "Volume Up";
 			linux,code = <KEY_VOLUMEUP>;
 			gpios = <&tlmm 85 GPIO_ACTIVE_LOW>;
 		};
@@ -66,6 +74,12 @@
 		cont_splash_mem: cont-splash@90001000 {
 			reg = <0x0 0x90001000 0x0 (720 * 1440 * 3)>;
 			no-map;
+		};
+
+		memory@9ff00000 {
+			compatible = "ramoops";
+			reg = <0x0 0x9ff00000 0x0 0x00100000>;
+			console-size = <0x100000>;
 		};
 
 		adsp_fw_mem: adsp@8d600000 {
@@ -130,6 +144,34 @@
 	vdd-supply = <&pm8953_l3>;
 	vdda-pll-supply = <&pm8953_l7>;
 	vdda-phy-dpdm-supply = <&pm8953_l13>;
+	status = "okay";
+};
+
+&pm8953_resin {
+	linux,code = <KEY_VOLUMEDOWN>;
+	status = "okay";
+};
+
+&pmi8950_fg {
+	monitored-battery = <&battery>;
+	power-supplies = <&pmi8950_smbcharger>;
+
+	status = "okay";
+};
+
+&pmi8950_smbcharger {
+	monitored-battery = <&battery>;
+
+	status = "okay";
+};
+
+&pmi8950_wled {
+	qcom,current-limit-microamp = <20000>;
+	qcom,ovp-millivolt = <29600>;
+	qcom,num-strings = <2>;
+	qcom,external-pfet;
+	qcom,cabc;
+
 	status = "okay";
 };
 
@@ -265,6 +307,32 @@
 	pinctrl-0 = <&sdc2_clk_on &sdc2_cmd_on &sdc2_data_on &sdc2_cd_on>;
 	pinctrl-1 = <&sdc2_clk_off &sdc2_cmd_off &sdc2_data_off &sdc2_cd_off>;
 	status = "okay";
+};
+
+&tlmm {
+	gpio-reserved-ranges = <0 4>, <135 4>;
+
+	ts_int_active: ts-int-active-pins {
+		pins = "gpio65";
+		function = "gpio";
+		drive-strength = <8>;
+		bias-pull-up;
+	};
+
+	pmx_mdss_default: pmx-mdss-default-pins {
+		pins = "gpio61";
+		function = "gpio";
+		drive-strength = <8>;
+		bias-disable;
+		output-high;
+	};
+
+	pmx_mdss_sleep: pmx-mdss-sleep-pins {
+		pins = "gpio61";
+		function = "gpio";
+		drive-strength = <2>;
+		bias-pull-down;
+	};
 };
 
 &uart_0 {
