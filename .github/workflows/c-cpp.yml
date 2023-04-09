@@ -51,7 +51,7 @@ jobs:
         pmbootstrap export /home/runner/workspace/output
         ls /home/runner/workspace/output
 
-#     - uses: actions/upload-artifact@v3
-#       with:
-#        name: Kernel image file
-#        path: /home/runner/workspace/output/KERNEL.img
+    - uses: actions/upload-artifact@v3
+      with:
+       name: Kernel image file
+       path: /home/runner/workspace/output/boot.img
