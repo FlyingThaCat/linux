@@ -3,8 +3,6 @@ name: Compile Kernel (Android)
 on:
   push:
     branches: [ "msm8953-6.1.0" ]
-  pull_request:
-    branches: [ "msm8953-6.1.0" ]
 
 jobs:
   build:
