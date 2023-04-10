@@ -46,6 +46,8 @@ jobs:
         [providers]
         EOT
 
+    - name: Cat The Config
+      run: cat ~/.config/pmbootstrap.cfg
     
     - name: Update APT sources
       run: sudo apt update
@@ -65,6 +67,9 @@ jobs:
         mkdir -p ~/.local/bin
         ln -s "$PWD/pmbootstrap/pmbootstrap.py" ~/.local/bin/pmbootstrap
         PATH="$HOME/.local/bin:$PATH"
+
+    - name: Do Some Init
+      run : yes "" | pmbootstrap init
 
     - name: Build Kernel
       run: |
