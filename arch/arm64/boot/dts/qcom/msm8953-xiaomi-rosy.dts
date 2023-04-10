@@ -4,13 +4,13 @@
 
 #include "msm8953.dtsi"
 #include "pm8953.dtsi"
-#include "pmi8950.dtsi"
+#include "pmi8940.dtsi"
 
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/leds/common.h>
 
 / {
-	compatible = "xiaomi,rosy", "qcom,msm8953"; 
+	compatible = "xiaomi,rosy", "qcom,sdm450"; 
 	model = "Xiaomi Redmi 5";
 	chassis-type = "handset";
 	qcom,msm-id = <0x152 0x00>;
