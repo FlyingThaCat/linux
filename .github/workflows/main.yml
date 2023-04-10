@@ -12,6 +12,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
+    - name: ls ing the repo
+      run : ls /home/runner/work/linux/linux
+    
     - name: Inject cache_git
       run : |
         mkdir -p /home/runner/.local/var/pmbootstrap/cache_git
@@ -77,16 +80,10 @@ jobs:
 
     - name: Do Some Init
       run : yes "" | pmbootstrap init
-      
-    - name: ls ing the home
-      run : ls /home/runner/
-      
-    - name: ls ing the repo
-      run : ls /home/runner/work/linux
 
     - name: Build Kernel
       run: |
-        pmbootstrap build linux-postmarketos-qcom-msm8953 --src=/home/runner/work/linux
+        pmbootstrap build linux-postmarketos-qcom-msm8953 --src=/home/runner/work/linux/linux
 
     - name: Step To run on failure
       if: ${{ failure() }}
