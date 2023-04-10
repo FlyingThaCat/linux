@@ -81,6 +81,11 @@ jobs:
     - name: Build Kernel
       run: |
         pmbootstrap build linux-postmarketos-qcom-msm8953 --src=/home/runner/work/linux
+
+    - name: Step To run on failure
+      if: ${{ failure() }}
+      run: |
+        cat ~/.local/var/pmbootstrap/log.txt
         
     - name: Export Kernel
       run: |
