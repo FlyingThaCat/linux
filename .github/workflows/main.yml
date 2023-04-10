@@ -33,13 +33,12 @@ jobs:
 
     - name: Build Kernel
       run: |
-        bash /home/runner/workspace/pmbootstrap/helpers/envkernel.sh
         pmbootstrap build linux-postmarketos-qcom-msm8953 --src=/home/runner/work/linux
         
     - name: Export Kernel
       run: |
-        pmbootstrap export /home/runner/workspace/output
         ls /home/runner/workspace/output
+        pmbootstrap export /home/runner/workspace/output
 
     - uses: actions/upload-artifact@v3
       with:
