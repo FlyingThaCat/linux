@@ -69,7 +69,7 @@
 	reserved-memory {
 		/delete-node/memory@85b00000;
 
-		other_ext_region: other_ext@84a00000 {
+		other_ext_region: other_ext_region@84a00000 {
 			reg = <0x0 0x84a00000 0x0 0x1e00000>;
 			no-map;
 		};
@@ -92,10 +92,6 @@
 		wcnss_fw_mem: wcnss@8e700000 {
 			reg = <0x0 0x8e700000 0x0 0x700000>;
 			no-map;
-		};
-
-		venus_mem: memory@80000000 {
-			reg = <0x0 0x80000000 0x0 0x10000000>;
 		};
 
 		ramoops@9ff00000 {
