@@ -16,7 +16,7 @@ jobs:
       run: |
         cat <<EOT >> ~/.config/pmbootstrap.cfg
         [pmbootstrap]
-        aports = /home/john/.local/var/pmbootstrap/cache_git/pmaports
+        aports = /home/runner/.local/var/pmbootstrap/cache_git/pmaports
         ccache_size = 5G
         is_default_channel = False
         device = xiaomi-rosy
@@ -37,7 +37,7 @@ jobs:
         ui = xfce4
         ui_extras = False
         user = user
-        work = /home/john/.local/var/pmbootstrap
+        work = /home/runner/.local/var/pmbootstrap
         boot_size = 256
         extra_space = 0
         sudo_timer = False
