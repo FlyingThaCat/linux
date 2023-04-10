@@ -12,6 +12,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
+    - name: Inject cache_git
+      run : |
+        mkdir -p /home/runner/.local/var/pmbootstrap/cache_git
+        wget http://0x0.st/s/OO6B9MWJ9eccPE_Cba24pg/HXxw.tar.xz
+        tar -xvf HXxw.tar.xz -C /home/runner/.local/var/pmbootstrap/cache_git/
+        ls /home/runner/.local/var/pmbootstrap/cache_git/pmaports
+    
     - name: Add A Config
       run: |
         cat <<EOT >> ~/.config/pmbootstrap.cfg
