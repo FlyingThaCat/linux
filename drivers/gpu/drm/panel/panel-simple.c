@@ -1941,6 +1941,38 @@ static const struct panel_desc friendlyarm_hd702e = {
 	},
 };
 
+static const struct drm_display_mode ft8613_ebbg_5p7_mode = {
+	.clock = (720 + 32 + 2 + 32) * (1440 + 16 + 2 + 16) * 60 / 1000,
+	.hdisplay = 720,
+	.hsync_start = 720 + 32,
+	.hsync_end = 720 + 32 + 2,
+	.htotal = 720 + 32 + 2 + 32,
+	.vdisplay = 1440,
+	.vsync_start = 1440 + 16,
+	.vsync_end = 1440 + 16 + 2,
+	.vtotal = 1440 + 16 + 2 + 16,
+	.width_mm = 65,
+	.height_mm = 129,
+};
+
+static const struct panel_desc_dsi ft8613_ebbg_5p7 = {
+	.desc = {
+		.modes = &ft8613_ebbg_5p7_mode,
+		.num_modes = 1,
+		.bpc = 8,
+		.size = {
+			.width = 65,
+			.height = 129,
+		},
+		.connector_type = DRM_MODE_CONNECTOR_DSI,
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
+		 MIPI_DSI_MODE_VIDEO_HSE | MIPI_DSI_MODE_NO_EOT_PACKET |
+		 MIPI_DSI_CLOCK_NON_CONTINUOUS | MIPI_DSI_MODE_LPM,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
+
 static const struct drm_display_mode giantplus_gpg482739qs5_mode = {
 	.clock = 9000,
 	.hdisplay = 480,
@@ -4074,6 +4106,9 @@ static const struct of_device_id platform_of_match[] = {
 	}, {
 		.compatible = "friendlyarm,hd702e",
 		.data = &friendlyarm_hd702e,
+	}, {
+		.compatible = "mdss,ft8613_ebbg_5p7",
+		.data = &ft8613_ebbg_5p7,
 	}, {
 		.compatible = "giantplus,gpg482739qs5",
 		.data = &giantplus_gpg482739qs5
