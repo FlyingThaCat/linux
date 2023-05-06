@@ -1,0 +1,203 @@
+// SPDX-License-Identifier: GPL-2.0
+// Copyright (c) 2019>
+
+#include <dt-bindings/iio/qcom,spmi-vadc.h>
+#include <dt-bindings/interrupt-controller/irq.h>
+#include <dt-bindings/spmi/spmi.h>
+
+&spmi_bus {
+	pmic@2 {
+		compatible = "qcom,pmi8940", "qcom,spmi-pmic";
+		reg = <0x2 SPMI_USID>;
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		pmi8940_vadc: vadc@3100 {
+			compatible = "qcom,qpnp-vadc";
+			reg = <0x3100>;
+			interrupts = <0x2 0x31 0x0 IRQ_TYPE_EDGE_RISING>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			adc-chan@0 {
+				label = "usbin";
+				reg = <0>;
+				qcom,decimation = <0>;
+				qcom,pre-div-channel-scaling = <4>;
+				qcom,calibration-type = "absolute";
+				qcom,scale-function = <0>;
+				qcom,hw-settle-time = <0>;
+				qcom,fast-avg-setup = <0>;
+			};
+
+			adc-chan@1 {
+				label = "dcin";
+				reg = <1>;
+				qcom,decimation = <0>;
+				qcom,pre-div-channel-scaling = <4>;
+				qcom,calibration-type = "absolute";
+				qcom,scale-function = <0>;
+				qcom,hw-settle-time = <0>;
+				qcom,fast-avg-setup = <0>;
+			};
+
+			adc-chan@3 {
+				label = "vchg_sns";
+				reg = <3>;
+				qcom,decimation = <0>;
+				qcom,pre-div-channel-scaling = <1>;
+				qcom,calibration-type = "absolute";
+				qcom,scale-function = <0>;
+				qcom,hw-settle-time = <0>;
+				qcom,fast-avg-setup = <0>;
+			};
+
+			adc-chan@9 {
+				label = "ref_625mv";
+				reg = <9>;
+				qcom,decimation = <0>;
+				qcom,pre-div-channel-scaling = <0>;
+				qcom,calibration-type = "absolute";
+				qcom,scale-function = <0>;
+				qcom,hw-settle-time = <0>;
+				qcom,fast-avg-setup = <0>;
+			};
+
+			adc-chan@a {
+				label = "ref_1250v";
+				reg = <0xa>;
+				qcom,decimation = <0>;
+				qcom,pre-div-channel-scaling = <0>;
+				qcom,calibration-type = "absolute";
+				qcom,scale-function = <0>;
+				qcom,hw-settle-time = <0>;
+				qcom,fast-avg-setup = <0>;
+			};
+
+			adc-chan@d {
+				label = "chg_temp";
+				reg = <0xd>;
+				qcom,decimation = <0>;
+				qcom,pre-div-channel-scaling = <0>;
+				qcom,calibration-type = "absolute";
+				qcom,scale-function = <16>;
+				qcom,hw-settle-time = <0>;
+				qcom,fast-avg-setup = <0>;
+			};
+		};
+
+		pmi8940_mpps: mpps@a000 {
+			compatible = "qcom,pmi8940-mpp", "qcom,spmi-mpp";
+			reg = <0xa000>;
+			gpio-controller;
+			gpio-ranges = <&pmi8940_mpps 0 0 4>;
+			#gpio-cells = <2>;
+			interrupt-controller;
+			#interrupt-cells = <2>;
+		};
+
+        // WHAT IS THIS ?
+		pmi8940_gpios: gpio@c000 {
+			compatible = "qcom,pmi8940-gpio", "qcom,spmi-gpio";
+			reg = <0xc000>;
+			gpio-controller;
+			gpio-ranges = <&pmi8940_gpios 0 0 2>;
+			#gpio-cells = <2>;
+			interrupt-controller;
+			#interrupt-cells = <2>;
+		};
+
+		pmi8940_smbcharger: smbchager@1000 {
+			compatible = "qcom,qpnp-smbcharger";
+			reg = <0x1000>;
+			interrupts = <2 0x10 0 IRQ_TYPE_EDGE_BOTH>,
+					     <2 0x10 1 IRQ_TYPE_EDGE_BOTH>,
+					     <2 0x10 2 IRQ_TYPE_EDGE_BOTH>,
+					     <2 0x10 3 IRQ_TYPE_EDGE_BOTH>,
+					     <2 0x10 4 IRQ_TYPE_EDGE_BOTH>,
+					     <2 0x10 5 IRQ_TYPE_EDGE_BOTH>,
+					     <2 0x10 6 IRQ_TYPE_EDGE_BOTH>,
+					     <2 0x10 7 IRQ_TYPE_EDGE_BOTH>;
+
+			interrupt-names = "chg-error",
+					          "chg-inhibit",
+					          "chg-prechg-sft",
+					          "chg-complete-chg-sft",
+					          "chg-p2f-thr",
+					          "chg-rechg-thr",
+					          "chg-taper-thr",
+					          "chg-tcc-thr";
+            // What ??
+			smbchg-lite;
+			status = "disabled";
+
+            // What ??
+			otg_vbus: otg-vbus {};
+		};
+
+		pmi8940_fg: fuel-gauge@4000 {
+			compatible = "qcom,qpnp-fg";
+			reg = <0x4000>;
+            // docs says need revid ?
+			interrupts = <0x2 0x40 0x0 IRQ_TYPE_EDGE_BOTH>,
+				         <0x2 0x40 0x1 IRQ_TYPE_EDGE_BOTH>,
+                         <0x2 0x40 0x2 IRQ_TYPE_EDGE_BOTH>,
+						 <0x2 0x40 0x3 IRQ_TYPE_EDGE_BOTH>,
+						 <0x2 0x40 0x4 IRQ_TYPE_EDGE_BOTH>,
+						 <0x2 0x40 0x5 IRQ_TYPE_EDGE_BOTH>,
+						 <0x2 0x40 0x6 IRQ_TYPE_EDGE_BOTH>;
+			interrupt-names = "high-soc",
+							  "low-soc",
+							  "full-soc",
+							  "empty-soc",
+							  "delta-soc",
+							  "first-est-done",
+							  "update-soc";
+			status = "okay";
+		};
+
+        // DO I NEED IT ?
+		atc_leds: leds@1243 {
+			reg = <0x1243>;
+			compatible = "qcom,leds-atc";
+			label = "charging";
+			status = "disabled";
+		};
+	};
+
+	pmic@3 {
+		compatible = "qcom,pmi8940", "qcom,spmi-pmic";
+		reg = <0x3 SPMI_USID>;
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+        //IDK THIS
+		labibb {
+			compatible = "qcom,pmi8998-lab-ibb";
+			lab_vreg: lab {
+				interrupts = <0x3 0xde 0x1 IRQ_TYPE_EDGE_RISING>,
+							 <0x3 0xde 0x0 IRQ_TYPE_LEVEL_LOW>;
+				interrupt-names = "sc-err", "ocp";
+				qcom,soft-start-us = <800>;
+			};
+
+			ibb_vreg: ibb {
+				interrupts = <0x3 0xdc 0x2 IRQ_TYPE_EDGE_RISING>,
+							 <0x3 0xdc 0x0 IRQ_TYPE_LEVEL_LOW>;
+				interrupt-names = "sc-err", "ocp";
+				qcom,discharge-resistor-kohms = <32>;
+			};
+		};
+
+		pmi8940_wled: leds@d800 {
+			compatible = "qcom,qpnp-wled";
+			reg = <0xd800>, <0xd900>;
+            reg-names = "qpnp-wled-ctrl-base", "qpnp-wled-sink-base";
+			interrupts = <0x3 0xd8 0x02 IRQ_TYPE_EDGE_RISING>;
+			interrupt-names = "sc-irq";
+			label = "backlight";
+
+			status = "disabled";
+		};
+	};
+};

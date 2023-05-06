@@ -5,7 +5,7 @@
  */
 /dts-v1/;
 
-#include "msm8953-xiaomi-common.dtsi"
+#include "msm8953-xiaomi-common-pmi8940.dtsi"
 
 /delete-node/ &cont_splash_mem;
 /delete-node/ &adsp_fw_mem;
@@ -46,7 +46,7 @@
 	compatible = "xiaomi,rosy-panel";
 };
 
-&pmi8950_wled {
+&pmi8940_wled {
 	qcom,external-pfet;
 	qcom,cabc;
 };
