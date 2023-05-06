@@ -1917,10 +1917,10 @@
 		spmi_bus: spmi@200f000 {
 			compatible = "qcom,spmi-pmic-arb";
 			reg = <0x200f000 0x1000>,
-					<0x2400000 0x800000>,
-					<0x2c00000 0x800000>,
-					<0x3800000 0x200000>,
-					<0x200a000 0x2100>;
+			      <0x2400000 0x800000>,
+			      <0x2c00000 0x800000>,
+			      <0x3800000 0x200000>,
+			      <0x200a000 0x2100>;
 			reg-names = "core", "chnls", "obsrvr", "intr", "cnfg";
 			interrupt-names = "periph_irq";
 			interrupts = <GIC_SPI 190 IRQ_TYPE_LEVEL_HIGH>;
@@ -1929,8 +1929,8 @@
 			interrupt-controller;
 
 			#interrupt-cells = <4>;
-			#address-cells = <1>;
-			#size-cells = <1>;
+			#address-cells = <2>;
+			#size-cells = <0>;
 		};
 
 		modem: remoteproc@4080000 {
