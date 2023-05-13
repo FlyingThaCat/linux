@@ -73,6 +73,40 @@
     };
 };
 
+&dsi0 {
+	panel: panel@0 {
+		compatible = "xiaomi,rosy-panel";
+		reg = <0>;
+
+		backlight = <&pmi8950_wled>;
+
+		reset-gpios = <&tlmm 61 GPIO_ACTIVE_LOW>;
+
+		pinctrl-names = "default", "sleep";
+		pinctrl-0 = <&pmx_mdss_default &mdss_te_default>;
+		pinctrl-1 = <&pmx_mdss_sleep &mdss_te_default>;
+
+		vsp-supply = <&lab_vreg>;
+		vsn-supply = <&ibb_vreg>;
+
+		port {
+			panel_in: endpoint {
+				remote-endpoint = <&dsi0_out>;
+			};
+		};
+	};
+};
+
+&dsi0_out {
+	data-lanes = <0 1 2 3>;
+	remote-endpoint = <&panel_in>;
+};
+
+&dsi_phy0 {
+        vddio-supply = <&pm8953_l6>;
+        vcca-supply = <&pm8953_l3>;
+};
+
 &panel {
 	compatible = "xiaomi,rosy-panel";
 };
@@ -91,6 +125,21 @@
 
 &tlmm {
 	gpio-reserved-ranges = <0 4>, <16 4>, <135 4>;
+	pmx_mdss_default: pmx-mdss-default-pins {
+		pins = "gpio61", "gpio59";
+		function = "gpio";
+		drive-strength = <8>;
+		bias-disable;
+		output-high;
+	};
+
+	pmx_mdss_sleep: pmx-mdss-sleep-pins {
+		pins = "gpio61", "gpio59";
+		function = "gpio";
+		drive-strength = <2>;
+		bias-pull-down;
+	};
+
 };
 
 &uart_0 {
