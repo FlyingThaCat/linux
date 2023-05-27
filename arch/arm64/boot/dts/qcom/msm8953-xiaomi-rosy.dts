@@ -128,12 +128,12 @@
 	};
 };
 
-&dsi0_out {
+&dsi0 {
 	data-lanes = <0 1 2 3>;
 	remote-endpoint = <&panel_in>;
 };
 
-&dsi_phy0 {
+&dsi0_phy {
         vddio-supply = <&pm8953_l6>;
         vcca-supply = <&pm8953_l3>;
 };
