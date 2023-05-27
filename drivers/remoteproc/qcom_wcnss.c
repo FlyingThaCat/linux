@@ -235,6 +235,8 @@ static int wcnss_start(struct rproc *rproc)
 		dev_err(wcnss->dev, "no iris registered\n");
 		ret = -EINVAL;
 		goto release_iris_lock;
+	} else {
+		dev_dbg(wcnss->dev, "iris registered\n");
 	}
 
 	for (i = 0; i < wcnss->num_pds; i++) {
@@ -266,6 +268,7 @@ static int wcnss_start(struct rproc *rproc)
 
 	ret = wait_for_completion_timeout(&wcnss->start_done,
 					  msecs_to_jiffies(5000));
+
 	if (wcnss->ready_irq > 0 && ret == 0) {
 		/* We have a ready_irq, but it didn't fire in time. */
 		dev_err(wcnss->dev, "start timed out\n");

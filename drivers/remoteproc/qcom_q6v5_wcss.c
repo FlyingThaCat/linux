@@ -237,6 +237,7 @@ static int q6v5_wcss_reset(struct q6v5_wcss *wcss)
 
 static int q6v5_wcss_start(struct rproc *rproc)
 {
+	dev_dbg("TRYING TO START WCSS\n");
 	struct q6v5_wcss *wcss = rproc->priv;
 	int ret;
 
